@@ -23,14 +23,14 @@ def current_series_id(row):
 def current_time_obs_value(row):
     return [
         row['TIME_PERIOD'] + '-01',
-        row['OBS_VALUE']
+        float(row['OBS_VALUE'])
     ]
 
 
 def data(row):
     return {
         'series_id': current_series_id(row),
-        'points': [current_time_obs_value(row)],
+        'points': current_time_obs_value(row),
         'fields': {
             'REF_AREA': row['REF_AREA'],
             'ENERGY_PRODUCT': row['ENERGY_PRODUCT'],
@@ -48,6 +48,7 @@ def handle_csv():
         reader = csv.DictReader(file)
         data_list = []
         for row in reader:
+         if row["REF_AREA"] == "RU":
             if not any(i_dict['series_id'] == current_series_id(row) for i_dict in data_list):
                 data_list.append(data(row))
             else:
