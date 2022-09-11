@@ -23,7 +23,7 @@ with open(f'jodi_gas_beta.csv', 'r') as file:
             row['TIME_PERIOD'] + '-01',
             row['OBS_VALUE']
         ]
-        if not any(d['series_id'] == current_id for d in list_of_dicts):
+        if not any(i_dict['series_id'] == current_id for i_dict in list_of_dicts):
             data = {
                 'series_id': current_id,
                 'points': [current_time_obsvalue],
@@ -38,13 +38,13 @@ with open(f'jodi_gas_beta.csv', 'r') as file:
             }
             list_of_dicts.append(data)
         else:
-            for dic in list_of_dicts:
-                if dic['series_id'] == current_id:
-                    dic['points'].append(current_time_obsvalue)
-                    dic['points'] = dic['points'][-5:]
+            for j_dict in list_of_dicts:
+                if j_dict['series_id'] == current_id:
+                    j_dict['points'].append(current_time_obsvalue)
+                    j_dict['points'] = j_dict['points'][-5:]
 
-for elem_data in list_of_dicts:
-    elem_data['series_id'] = '\\'.join(elem_data['series_id'])
+for k_dict in list_of_dicts:
+    k_dict['series_id'] = '\\'.join(k_dict['series_id'])
 
 parsed = '[\n' + ',\n'.join(map(json.dumps, list_of_dicts)) + '\n]'
 
