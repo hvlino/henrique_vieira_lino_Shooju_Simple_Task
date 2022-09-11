@@ -48,7 +48,6 @@ def handle_csv():
         reader = csv.DictReader(file)
         data_list = []
         for row in reader:
-         if row["REF_AREA"] == "RU":
             if not any(i_dict['series_id'] == current_series_id(row) for i_dict in data_list):
                 data_list.append(data(row))
             else:
