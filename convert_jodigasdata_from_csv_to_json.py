@@ -51,6 +51,13 @@ def get_dict_index_by_series_id(data_list, row):
     return -1
 
 
+def write_series_output_to_json(data_list):
+    parsed_data_list = '[\n' + ',\n'.join(map(json.dumps, data_list)) + '\n]'
+    with open('seriesOutput.json', 'w') as file_out:
+        file_out.write(parsed_data_list)
+    return parsed_data_list
+
+
 def handle_csv():
     download_source()
     with open(f'jodi_gas_beta.csv', 'r') as file:
@@ -64,13 +71,6 @@ def handle_csv():
                 data_list[index]['points'].append(current_time_obs_value(row))
                 data_list[index]['points'] = data_list[index]['points'][-5:]
     return write_series_output_to_json(data_list)
-
-
-def write_series_output_to_json(data_list):
-    parsed_data_list = '[\n' + ',\n'.join(map(json.dumps, data_list)) + '\n]'
-    with open('seriesOutput.json', 'w') as file_out:
-        file_out.write(parsed_data_list)
-    return parsed_data_list
 
 
 print(handle_csv())
