@@ -4,9 +4,11 @@ from io import BytesIO
 from urllib.request import urlopen
 from zipfile import ZipFile
 
+SOURCE_URL = 'https://www.jodidata.org/_resources/files/downloads/gas-data/jodi_gas_csv_beta.zip'
+
 
 def download_source():
-    with urlopen(source_url) as zip_resp:
+    with urlopen(SOURCE_URL) as zip_resp:
         with ZipFile(BytesIO(zip_resp.read())) as z_file:
             z_file.extractall()
 
@@ -37,9 +39,16 @@ def data(row):
             'FLOW_BREAKDOWN': row['FLOW_BREAKDOWN'],
             'UNIT_MEASURE': row['UNIT_MEASURE'],
             'ASSESSMENT_CODE': row['ASSESSMENT_CODE'],
-            'SOURCE': source_url
+            'SOURCE': SOURCE_URL
         }
     }
+
+
+def get_dict_index_by_series_id(data_list, row):
+    for index, i_dict in enumerate(data_list):
+        if i_dict['series_id'] == current_series_id(row):
+            return index
+    return -1
 
 
 def handle_csv():
@@ -48,22 +57,20 @@ def handle_csv():
         reader = csv.DictReader(file)
         data_list = []
         for row in reader:
-            if not any(i_dict['series_id'] == current_series_id(row) for i_dict in data_list):
+            index = get_dict_index_by_series_id(data_list, row)
+            if index == -1:
                 data_list.append(data(row))
             else:
-                for j_dict in data_list:
-                    if j_dict['series_id'] == current_series_id(row):
-                        j_dict['points'].append(current_time_obs_value(row))
-                        j_dict['points'] = j_dict['points'][-5:]
-    write_series_output_to_json(data_list)
+                data_list[index]['points'].append(current_time_obs_value(row))
+                data_list[index]['points'] = data_list[index]['points'][-5:]
+    return write_series_output_to_json(data_list)
 
 
 def write_series_output_to_json(data_list):
     parsed_data_list = '[\n' + ',\n'.join(map(json.dumps, data_list)) + '\n]'
     with open('seriesOutput.json', 'w') as file_out:
         file_out.write(parsed_data_list)
-    return print(parsed_data_list)
+    return parsed_data_list
 
 
-source_url = 'https://www.jodidata.org/_resources/files/downloads/gas-data/jodi_gas_csv_beta.zip'
-handle_csv()
+print(handle_csv())
