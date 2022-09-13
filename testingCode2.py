@@ -35,14 +35,14 @@ def data(row, series_id, time_period_obs_value):
     return {
         'series_id': series_id,
         'points': time_period_obs_value,
-        'fields': {
-            'REF_AREA': row['REF_AREA'],
-            'ENERGY_PRODUCT': row['ENERGY_PRODUCT'],
-            'FLOW_BREAKDOWN': row['FLOW_BREAKDOWN'],
-            'UNIT_MEASURE': row['UNIT_MEASURE'],
-            'ASSESSMENT_CODE': row['ASSESSMENT_CODE'],
-            'SOURCE': SOURCE_URL
-        }
+        # 'fields': {
+        #     'REF_AREA': row['REF_AREA'],
+        #     'ENERGY_PRODUCT': row['ENERGY_PRODUCT'],
+        #     'FLOW_BREAKDOWN': row['FLOW_BREAKDOWN'],
+        #     'UNIT_MEASURE': row['UNIT_MEASURE'],
+        #     'ASSESSMENT_CODE': row['ASSESSMENT_CODE'],
+        #     'SOURCE': SOURCE_URL
+        # }
     }
 
 
@@ -60,7 +60,8 @@ def handle_csv():
     with open(f'STAGING_world_NewFormat.csv', 'r') as f_input:
         reader = csv.DictReader(f_input)
         for row in reader:
-            data_default_dict_list[current_series_id(row)].append(current_time_obs_value(row))
+            if "2022" in row["TIME_PERIOD"]:
+                data_default_dict_list[current_series_id(row)].append(current_time_obs_value(row))
         for series_id, time_period_obs_value in data_default_dict_list.items():
             data_list.append(data(row, series_id, time_period_obs_value))
     return write_series_output_to_json(data_list)
