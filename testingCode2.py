@@ -5,6 +5,7 @@ from urllib.request import urlopen
 from zipfile import ZipFile
 import time
 from collections import defaultdict
+from operator import itemgetter
 
 SOURCE_URL = 'https://www.jodidata.org/_resources/files/downloads/gas-data/GAS_world_NewFormat.zip'
 
@@ -20,7 +21,8 @@ def current_series_id(row):
         row['REF_AREA'],
         row['ENERGY_PRODUCT'],
         row['FLOW_BREAKDOWN'],
-        row['UNIT_MEASURE']
+        row['UNIT_MEASURE'],
+        row['ASSESSMENT_CODE']
     ])
 
 
@@ -31,19 +33,8 @@ def current_time_obs_value(row):
     ]
 
 
-def data(row, series_id, time_period_obs_value):
-    return {
-        'series_id': series_id,
-        'points': time_period_obs_value,
-        # 'fields': {
-        #     'REF_AREA': row['REF_AREA'],
-        #     'ENERGY_PRODUCT': row['ENERGY_PRODUCT'],
-        #     'FLOW_BREAKDOWN': row['FLOW_BREAKDOWN'],
-        #     'UNIT_MEASURE': row['UNIT_MEASURE'],
-        #     'ASSESSMENT_CODE': row['ASSESSMENT_CODE'],
-        #     'SOURCE': SOURCE_URL
-        # }
-    }
+# def data(row, series_id, time_period_obs_value):
+#     return
 
 
 def write_series_output_to_json(test_list):
@@ -60,10 +51,22 @@ def handle_csv():
     with open(f'STAGING_world_NewFormat.csv', 'r') as f_input:
         reader = csv.DictReader(f_input)
         for row in reader:
-            if "2022" in row["TIME_PERIOD"]:
-                data_default_dict_list[current_series_id(row)].append(current_time_obs_value(row))
+            data_default_dict_list[current_series_id(row)].append(current_time_obs_value(row))
         for series_id, time_period_obs_value in data_default_dict_list.items():
-            data_list.append(data(row, series_id, time_period_obs_value))
+            data = {
+                'series_id': series_id,
+                'points': time_period_obs_value,
+                # 'fields': {
+                #     'REF_AREA': row['REF_AREA'],
+                #     'ENERGY_PRODUCT': row['ENERGY_PRODUCT'],
+                #     'FLOW_BREAKDOWN': row['FLOW_BREAKDOWN'],
+                #     'UNIT_MEASURE': row['UNIT_MEASURE'],
+                #     'ASSESSMENT_CODE': row['ASSESSMENT_CODE'],
+                #     'SOURCE': SOURCE_URL
+                # }
+            }
+            data["points"] = sorted(data["points"], reverse=True, key=itemgetter(0))[0:5]
+            data_list.append(data)
     return write_series_output_to_json(data_list)
 
 
