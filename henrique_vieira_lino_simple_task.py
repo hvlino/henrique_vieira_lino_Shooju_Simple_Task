@@ -82,11 +82,9 @@ def get_dict_from_csv(filename):
     return data_dict
 
 
-def write_output_to_json_and_stdout(json_list):
-    with open("seriesOutput.json", "w") as file_output:
-        for series in json_list:
-            file_output.write(json.dumps(series) + "\n")
-            sys.stdout.write((json.dumps(series) + "\n"))
+def write_to_stdout(json_list):
+    for series in json_list:
+        sys.stdout.write((json.dumps(series) + "\n"))
 
 
 def append_data_to_json():
@@ -96,7 +94,7 @@ def append_data_to_json():
     for series_id, points_fields in data_dict.items():
         data = generate_data(series_id, extract_points_fields(points_fields))
         json_output.append(data)
-    return write_output_to_json_and_stdout(json_output)
+    return write_to_stdout(json_output)
 
 
 start_time = time.time()
