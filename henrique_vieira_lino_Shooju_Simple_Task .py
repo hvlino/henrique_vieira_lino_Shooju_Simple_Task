@@ -19,6 +19,44 @@ def download_source():
             z_file.extractall()
 
 
+def get_dict_from_csv(filename):
+    date_limit = date_ago(RANGE_DAYS)
+    data_dict = defaultdict(list)
+    with open(filename, "r") as file_input:
+        reader = csv.DictReader(file_input)
+        for row in reader:
+            append_row_to_dict(row, date_limit, data_dict)
+    return data_dict
+
+
+def generate_data(series_id, extracted_points_fields):
+    return {
+        "series_id": series_id,
+        "points": extracted_points_fields["points"],
+        "fields": extracted_points_fields["fields"]
+    }
+
+
+def extract_points_fields(points_fields):
+    extract = {
+        "points": [],
+        "fields": points_fields[0][2]
+    }
+    for values in points_fields:
+        extract["points"].append([values[0], values[1]])
+    return extract
+
+
+def date_ago(days):
+    return time.strptime(str(date.today() - datetime.timedelta(days))[:-3], "%Y-%m")
+
+
+def append_row_to_dict(row, limit_date, data_dict):
+    time_period_of_row = time.strptime(row["TIME_PERIOD"], "%Y-%m")
+    if time_period_of_row >= limit_date:
+        data_dict[current_series_id(row)].append(current_points_fields(row))
+
+
 def current_series_id(row):
     return "\\".join([
         row["REF_AREA"],
@@ -44,46 +82,8 @@ def current_points_fields(row):
     ]
 
 
-def append_row_to_dict(row, limit_date, data_dict):
-    time_period_of_row = time.strptime(row["TIME_PERIOD"], "%Y-%m")
-    if time_period_of_row >= limit_date:
-        data_dict[current_series_id(row)].append(current_points_fields(row))
-
-
-def extract_points_fields(points_fields):
-    extract = {
-        "points": [],
-        "fields": points_fields[0][2]
-    }
-    for values in points_fields:
-        extract["points"].append([values[0], values[1]])
-    return extract
-
-
-def generate_data(series_id, extracted_points_fields):
-    return {
-        "series_id": series_id,
-        "points": extracted_points_fields["points"],
-        "fields": extracted_points_fields["fields"]
-    }
-
-
-def date_ago(days):
-    return time.strptime(str(date.today() - datetime.timedelta(days))[:-3], "%Y-%m")
-
-
-def get_dict_from_csv(filename):
-    date_limit = date_ago(RANGE_DAYS)
-    data_dict = defaultdict(list)
-    with open(filename, "r") as file_input:
-        reader = csv.DictReader(file_input)
-        for row in reader:
-            append_row_to_dict(row, date_limit, data_dict)
-    return data_dict
-
-
-def write_to_stdout(json_list):
-    for series in json_list:
+def write_to_stdout(json_output):
+    for series in json_output:
         sys.stdout.write((json.dumps(series) + "\n"))
 
 
