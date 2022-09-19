@@ -1,6 +1,6 @@
-# Henrique Vieira Lino, Shooju Simple Task
+# attempt by: Henrique Vieira Lino
 
-## Briefing:
+## Shooju Simple Task:
 
 ### Background
 
