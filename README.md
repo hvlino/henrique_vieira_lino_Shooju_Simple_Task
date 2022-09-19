@@ -1,4 +1,17 @@
-# attempt by: Henrique Vieira Lino
+# Shooju Simple Coding Challenge 
+
+This is a coding challenge created by Henrique Vieira Lino.
+
+## Requirements
+
+Before starting, make sure you've met the following requirements:
+* `python 3`;
+
+## Running
+
+* Clone this repo
+* Run `python3 henrique_vieira_lino_Shooju_Simple_Task.py` (Linux/Mac) or `py henrique_vieira_lino_Shooju_Simple_Task.py` (Windows)
+* Enjoy!
 
 ## Shooju Simple Task:
 
