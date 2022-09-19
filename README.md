@@ -1,5 +1,28 @@
 # attempt by: Henrique Vieira Lino
 
+## 💻 Prerequisites
+
+Before starting, make sure you've met the following requirements:
+* You have installed the latest version of `python3`;
+* If you have a `<Linux/Mac>` machine: Python3 comes preinstalled on Mac OS X and on most Linux distributions;
+* If you have a `<Windows>` machine: Access https://www.python.org/downloads/ to download latest python3 version in your system;
+* You read the `Shooju Simple Task briefing`.
+
+## ☕ Running henrique_vieira_lino_Shooju_Simple_Task.py file
+
+On `<Linux/Mac>` machine:
+* Open the terminal by searching for it in the dashboard or pressing Ctrl + Alt + T.
+* Navigate the terminal to the directory where the script is located using the cd command.
+* Type "python henrique_vieira_lino_Shooju_Simple_Task.py" in the terminal to execute the script.
+On `<Windows>` machine:
+* After having installed python launcher properly, open the "cmd" by searching for it in search bar;
+* Navigate the terminal to the directory where the script is located using the cd command;
+* Execute the command "py henrique_vieira_lino_Shooju_Simple_Task.py".
+or for all cases:
+* Download and install an IDE of your preference, such as "pyCharm" or "Visual Studio Code";
+* Go to to the directory where the script is located;
+* Run the script called "henrique_vieira_lino_Shooju_Simple_Task.py"
+
 ## Shooju Simple Task:
 
 ### Background
