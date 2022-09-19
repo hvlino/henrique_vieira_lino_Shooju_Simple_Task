@@ -3,7 +3,7 @@
 ## Requirements
 
 Before starting, make sure you've met the following requirements:
-* `python3`;
+* `python 3`;
 * If you have a `<Linux/Mac>` machine: Python3 comes preinstalled on Mac OS X and on most Linux distributions;
 * If you have a `<Windows>` machine: Access https://www.python.org/downloads/ to download latest python3 version in your system;
 * You read the `Shooju Simple Task` briefing down below.
