@@ -1,4 +1,3 @@
-import os
 from collections import defaultdict
 from datetime import date
 from io import BytesIO
@@ -9,10 +8,6 @@ import datetime
 import json
 import sys
 import time
-
-import zipfile
-import pathlib
-import urllib.request
 
 SOURCE_URL = "https://www.jodidata.org/_resources/files/downloads/gas-data/GAS_world_NewFormat.zip"
 RANGE_DAYS = 365
