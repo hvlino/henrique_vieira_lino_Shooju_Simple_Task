@@ -1,6 +1,6 @@
 # Shooju Simple Coding Challenge 
 
-This is a coding challenge created by Henrique Vieira Lino.
+This is a coding challenge solution by Henrique Vieira Lino.
 
 ## Requirements
 
